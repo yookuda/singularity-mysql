@@ -18,16 +18,18 @@ From: ubuntu:18.04
     apt-get -y install vim wget sudo less
 
     # install MySQL
+    MYSQL_VERSION=5.6.46
     cd /usr/local/src
-    wget http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6/mysql-5.6.44.tar.gz
-    tar xzvf mysql-5.6.44.tar.gz
-    cd mysql-5.6.44
-    apt-get -y install cmake libncurses5-dev make gcc g++
+    wget http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6/mysql-${MYSQL_VERSION}.tar.gz
+    tar xzvf mysql-${MYSQL_VERSION}.tar.gz
+    cd mysql-${MYSQL_VERSION}
+    apt-get -y install cmake libncurses5-dev make gcc g++ libssl-dev
     mkdir /usr/local/boost
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
     -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/usr/local/boost -DDEFAULT_CHARSET=utf8 \
     -DDEFAULT_COLLATION=utf8_general_ci \
-    -DWITH_INNOBASE_STORAGE_ENGINE=1
+    -DWITH_INNOBASE_STORAGE_ENGINE=1 \
+    -DMYSQL_UNIX_ADDR=/usr/local/mysql/data/mysql.sock
     make -j 4 && make install
 
     apt-get -y install cpanminus
